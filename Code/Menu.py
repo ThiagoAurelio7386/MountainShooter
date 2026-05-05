@@ -18,8 +18,8 @@ class Menu:
         pygame.mixer_music.play(-1)  # faz música tocar indefinidamente
         while True:
             self.window.blit(source=self.surf, dest=self.rect) #desenha imagem
-            self.menu_text(50, "Mountain", COLOR_ORANGE, ((WIN_WIDTH / 2), 70))  # escreve texto
-            self.menu_text(50, "Shooter", COLOR_ORANGE, ((WIN_WIDTH / 2), 120))  # escreve texto
+            self.menu_text(50, "Mountain", COLOR_WHITE, ((WIN_WIDTH / 2), 70))  # escreve texto
+            self.menu_text(50, "Shooter", COLOR_WHITE, ((WIN_WIDTH / 2), 120))  # escreve texto
             #no menu_text, o text_center_pos configura a posição do text em eixo X e Y.
 
             for i in range(len(MENU_OPTION)):
