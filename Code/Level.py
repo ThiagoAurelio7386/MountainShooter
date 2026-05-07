@@ -8,6 +8,7 @@ from pygame.font import Font
 from Code.Const import WIN_HEIGHT, COLOR_WHITE, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
 from Code.Entity import Entity
 from Code.EntityFactory import EntityFactory
+from Code.EntityMediator import EntityMediator
 
 
 class Level:
@@ -48,6 +49,9 @@ class Level:
             self.level_text(14, f'fps: {clock.get_fps() :.0f}', COLOR_WHITE,  (10, WIN_HEIGHT - 35))
             self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip() #Nos textos acima timeout mostra a duração da fase, fps colocar o fps na tela, entidades mostra quantas entidades tem na tela
+            #collisions
+            EntityMediator.verify_collision(entity_list=self.entity_list) #verificação de colisão
+            EntityMediator.verify_health(entity_list=self.entity_list) #verificação de HP
         pass
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
