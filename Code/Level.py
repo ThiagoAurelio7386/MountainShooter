@@ -12,31 +12,33 @@ from Code.EntityFactory import EntityFactory
 class Level:
 
     def __init__(self, window, name, game_mode): #Lista genérica
+        self.timeout = None
         self.window = window
         self.name = name
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Level1Bg')) #instancia todos os objetos desejados
+        self.timeout = 20000 # 20 segundos
 
     def run(self, ):
         pygame.mixer_music.load(f'./Asset/{self.name}.mp3') #coloca a musica escolhida no level indefinidamente
         pygame.mixer_music.play(-1)
-        clock = pygame.time.Clock() #cloc
+        clock = pygame.time.Clock() #clock
         while True:
             clock.tick(60) #quanto maior o fps maior a velocidade de execução
             for ent in self.entity_list: #pega as imagens necessárias
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 ent.move() #parte do efeito parallax, faz o fundo mover
-            for event in pygame.event.get():
+            for event in pygame.event.get(): #permite fechar o jogo
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
             # printed text
-            self.level_text( 14,f'{self.name} - Timeout {self.timeout / 1000 :.1d}s', COLOR_WHITE,  (10, 5))
+            self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000 :.1f}s', COLOR_WHITE,  (10, 5))
             self.level_text(14, f'fps: {clock.get_fps() :.0f}', COLOR_WHITE,  (10, WIN_HEIGHT - 35))
-            self.level_text(14,  f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, (WIN_HEIGHT - 20))
-            pygame.display.flip()
+            self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
+            pygame.display.flip() #Nos textos acima timeout mostra a duração da fase, fps colocar o fps na tela, entidades mostra quantas entidades tem na tela
         pass
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
