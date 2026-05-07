@@ -9,7 +9,7 @@ class Menu:
 
     def __init__(self, window):
         self.window = window
-        self.surf = pygame.image.load('./Asset/MenuBg.png') #carrega imagem selecionada
+        self.surf = pygame.image.load('./Asset/MenuBg.png').convert_alpha() #carrega imagem selecionada, cAlpha ajuda a otimizar imagens
         self.rect = self.surf.get_rect(left=0, top=0) #coordenadas da imagem, default
 
 
