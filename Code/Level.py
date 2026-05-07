@@ -1,8 +1,10 @@
 import sys
 
 import pygame
+from pygame import Surface, Rect
+from pygame.font import Font
 
-from Code.Const import WIN_HEIGHT
+from Code.Const import WIN_HEIGHT, COLOR_WHITE
 from Code.Entity import Entity
 from Code.EntityFactory import EntityFactory
 
@@ -31,8 +33,14 @@ class Level:
                     sys.exit()
 
             # printed text
-            self.level_text(text_size 14, text f'{self.name} - Timeout {self.timeout / 1000 :.1d}s', COLOR_WHITE, text_pos (10, 5))
-            self.level_text(text_size 14, text f'fps: {clock.get_fps() :.0f}', COLOR_WHITE, text_pos (10, WIN_HEIGHT - 35))
-            self.level_text(text_size 14, text f'entidades: {len(self.entity_list)}', COLOR_WHITE, text_pos (10, WIN_HEIGHT - 20))
+            self.level_text( 14,f'{self.name} - Timeout {self.timeout / 1000 :.1d}s', COLOR_WHITE,  (10, 5))
+            self.level_text(14, f'fps: {clock.get_fps() :.0f}', COLOR_WHITE,  (10, WIN_HEIGHT - 35))
+            self.level_text(14,  f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, (WIN_HEIGHT - 20))
             pygame.display.flip()
         pass
+
+    def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
+        text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
+        text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
+        text_rect: Rect = text_surf.get_rect(left=text_pos[0], top=text_pos[1])
+        self.window.blit(source=text_surf, dest=text_rect)
