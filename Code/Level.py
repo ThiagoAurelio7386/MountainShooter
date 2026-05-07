@@ -6,9 +6,11 @@ from pygame import Surface, Rect
 from pygame.font import Font
 
 from Code.Const import WIN_HEIGHT, COLOR_WHITE, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
+from Code.Enemy import Enemy
 from Code.Entity import Entity
 from Code.EntityFactory import EntityFactory
 from Code.EntityMediator import EntityMediator
+from Code.Player import Player
 
 
 class Level:
@@ -35,7 +37,11 @@ class Level:
             clock.tick(60) #quanto maior o fps maior a velocidade de execução
             for ent in self.entity_list: #pega as imagens necessárias
                 self.window.blit(source=ent.surf, dest=ent.rect)
-                ent.move() #parte do efeito parallax, faz o fundo mover
+                ent.move() #parte do efeito parallax, faz o fundo e (talvez) outras entidades mover
+                if isinstance(ent, (Player, Enemy)): #tiros do player e inimigo
+                    shoot = ent.shoot()
+                    if shoot is not None:
+                        self.entity_list.append(shoot) #tiros do player e inimigo
             for event in pygame.event.get(): #permite fechar o jogo
                 if event.type == pygame.QUIT:
                     pygame.quit()

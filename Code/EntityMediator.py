@@ -1,5 +1,8 @@
+from Code.Const import WIN_WIDTH
 from Code.Enemy import Enemy
+from Code.EnemyShot import EnemyShot
 from Code.Entity import Entity
+from Code.PlayerShot import PlayerShot
 
 
 class EntityMediator:
@@ -7,7 +10,13 @@ class EntityMediator:
     @staticmethod
     def __verify_collision_window(ent: Entity): # verifica se atingiu limite da tela
         if isinstance(ent, Enemy):
-            if ent.rect.right < 0: #se o inimigo passar da tela o HP será zerado
+            if ent.rect.right <= 0: #se o inimigo passar da tela o HP será zerado
+                ent.health = 0
+        if isinstance(ent, PlayerShot): #remove tiros não usados
+            if ent.rect.left >= WIN_WIDTH:
+                ent.health = 0
+        if isinstance(ent, EnemyShot):
+            if ent.rect.right <= 0: #se o inimigo passar da tela o HP será zerado
                 ent.health = 0
 
     @staticmethod
