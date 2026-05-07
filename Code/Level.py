@@ -1,10 +1,11 @@
+import random
 import sys
 
 import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from Code.Const import WIN_HEIGHT, COLOR_WHITE
+from Code.Const import WIN_HEIGHT, COLOR_WHITE, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
 from Code.Entity import Entity
 from Code.EntityFactory import EntityFactory
 
@@ -18,6 +19,11 @@ class Level:
         self.game_mode = game_mode
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Level1Bg')) #instancia todos os objetos desejados
+        self.entity_list.append(EntityFactory.get_entity('Player1')) #coloca o jogador
+        if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]: #Adiciona o Player2 se o modo correto for escolhido
+            self.entity_list.append(EntityFactory.get_entity('Player2')) #coloca o Player2 no level
+        pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+
         self.timeout = 20000 # 20 segundos
 
     def run(self, ):
@@ -33,6 +39,9 @@ class Level:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == EVENT_ENEMY:
+                    choice = random.choice(('Enemy1', 'Enemy2'))
+                    self.entity_list.append(EntityFactory.get_entity(choice))
 
             # printed text
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000 :.1f}s', COLOR_WHITE,  (10, 5))
