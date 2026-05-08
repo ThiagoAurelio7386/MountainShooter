@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import pygame.image
 
-from Code.Const import ENTITY_HEALTH
+from Code.Const import ENTITY_HEALTH, ENTITY_DAMAGE
 
 
 class Entity(ABC):
@@ -13,6 +13,8 @@ class Entity(ABC):
         self.rect = self.surf.get_rect(left=position[0], top=position[1]) # 0 Eixo X e 1 Eixo Y
         self.speed = 0
         self.health = ENTITY_HEALTH[self.name] #Vida de cada entidade do jogo
+        self.damage = ENTITY_DAMAGE[self.name] #dano de cada entidade do jogo
+        self.last_dmg = 'None' #variavel para que o score só conte o que o jogador mexeu
 
     @abstractmethod
     def move(self, ):
