@@ -13,10 +13,16 @@ class EntityFactory:
         match entity_name:
             case 'Level1Bg': #Matchcase da lista
                 list_bg = [] #lista com os backgrounds
-                for i in range(7):
+                for i in range(7): # quantidade de imagens bg no level 1
                     list_bg.append(Background(f'Level1Bg{i}',  (0,0))) #vai juntando todos os backgrounds Level1Bg do 1 até 6
                     list_bg.append(Background(f'Level1Bg{i}',  (WIN_WIDTH, 0))) #parte do efeito parallax
                 return list_bg #cada linha "list_bg.append" é um conjunto de 7 imagens, sempre use 2 linhas para ter boa estica
+            case 'Level2Bg':
+                list_bg = []  # lista com os backgrounds
+                for i in range(5): # quantidade de imagens bg no level 2
+                    list_bg.append(Background(f'Level2Bg{i}', (0, 0)))
+                    list_bg.append(Background(f'Level2Bg{i}', (WIN_WIDTH, 0)))  # parte do efeito parallax
+                return list_bg
             case 'Player1':
                 return Player('Player1', (10, WIN_HEIGHT / 2 - 30)) #define posição do player, neste projeto esta no meio do canto esquerdo
             case 'Player2':
