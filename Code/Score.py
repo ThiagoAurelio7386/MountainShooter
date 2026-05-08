@@ -2,7 +2,7 @@ import sys
 from datetime import datetime
 
 import pygame
-from pygame import Surface, Rect, KEYDOWN, K_RETURN, K_BACKSPACE
+from pygame import Surface, Rect, KEYDOWN, K_RETURN, K_BACKSPACE, K_ESCAPE
 from pygame.font import Font
 
 from Code.Const import C_YELLOW, SCORE_POS, MENU_OPTION, C_WHITE
@@ -47,6 +47,8 @@ class Score:
                 elif event.type == KEYDOWN:
                     if event.key == K_RETURN and len(name) == 4: #escrever nome
                         db_proxy.save({'name': name, 'score': score, 'date': get_formatted_date()}) #coloca data no score
+                        self.show()
+                        return
                     elif event.key == K_BACKSPACE: #apaga caracter
                         name = name [:-1]
                     else:
@@ -60,7 +62,24 @@ class Score:
         pygame.mixer_music.load('./Asset/Score.mp3')  # seleciona arquivo da musica
         pygame.mixer_music.play(-1)  # faz música tocar indefinidamente
         self.window.blit(source=self.surf, dest=self.rect)
+        self.score_text( 48, 'TOP 10 SCORE', C_YELLOW, SCORE_POS['Title'])
+        self.score_text(20, 'NAME       SCORE           DATE      ', C_YELLOW, SCORE_POS['Label'])
+        db_proxy = DBProxy('DBScore')
+        list_score = db_proxy.retrieve_top10()
+        db_proxy.close()
+
+        for player_score in list_score:
+            id_, name, score, date = player_score
+            self.score_text( 20, f'{name}   {score}     {date}', C_YELLOW,
+                             SCORE_POS[list_score.index(player_score)])
         while True:
+            for event in pygame.event.get(): #permite fechar o jogo
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == KEYDOWN:
+                    if event == K_ESCAPE:
+                        return
             pygame.display.flip()
 
 

@@ -144,7 +144,7 @@ WIN_HEIGHT = 324
 SCORE_POS = {'Title': (WIN_WIDTH /2, 50),
              'EnterName': (WIN_WIDTH /2, 80),
              'Label':(WIN_WIDTH /2, 90),
-             'Name': (WIN_WIDTH /2,),
+             'Name': (WIN_WIDTH /2, 110),
              0:  (WIN_WIDTH /2, 110),
              1:  (WIN_WIDTH /2, 130),
              2:  (WIN_WIDTH /2, 150),
