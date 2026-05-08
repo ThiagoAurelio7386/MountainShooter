@@ -24,13 +24,13 @@ class EntityMediator:
     def __verify_collision_entity(ent1, ent2): #colisões de tiro com entidade (player and enemy)
         valid_interaction = False
         if  isinstance(ent1, Enemy) and isinstance(ent2, PlayerShot):
-            valid_collision = True
+            valid_interaction = True
         elif  isinstance(ent1, PlayerShot) and isinstance(ent2, Enemy):
-            valid_collision = True
+            valid_interaction = True
         elif  isinstance(ent1, Player) and isinstance(ent2, EnemyShot):
-            valid_collision = True
+            valid_interaction = True
         elif  isinstance(ent1, EnemyShot) and isinstance(ent2, Player):
-            valid_collision = True
+            valid_interaction = True
 
         if valid_interaction: #if valid_interaction == True:
             if (ent1.rect.right >= ent2.rect.left and
@@ -41,6 +41,17 @@ class EntityMediator:
                 ent2.health -= ent1.damage #sistema de colisão, dano
                 ent1.last_dmg = ent2.name
                 ent2.last_dmg = ent1.name
+
+    @staticmethod
+    def __give_score(enemy: Enemy, entity_list: list[Entity]):  # sistema de score
+        if enemy.last_dmg == 'Player1Shot':
+            for ent in entity_list:
+                if ent.name == 'Player1':
+                    ent.score += enemy.score
+        elif enemy.last_dmg == 'Player2Shot':
+            for ent in entity_list:
+                if ent.name == 'Player2':
+                    ent.score += enemy.score
 
     @staticmethod
     def verify_collision(entity_list: list[Entity]): #verificação de colisão
@@ -54,5 +65,7 @@ class EntityMediator:
     @staticmethod
     def verify_health(entity_list: list[Entity]): #verifica hp, recebe Entity como parametro
         for ent in entity_list:
-            if ent.health <= 0: #se HP da entity for igual ou maior que zero, ela sera removida
+            if ent.health <= 0: #se HP da entity for igual ou menor que zero, ela sera removida
+                if isinstance(ent, Enemy): #Dar score ao eliminar inimigo
+                    EntityMediator.__give_score(ent, entity_list) #sistema de score
                 entity_list.remove(ent)  #se HP da entity for igual ou maior que zero, ela sera removida
